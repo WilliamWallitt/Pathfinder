@@ -16,7 +16,7 @@
 
 <body>
 
-<nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark text-light">
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark text-light">
 
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav mr-auto">
@@ -33,10 +33,18 @@
 
 </nav>
 
+<div class="container m-3 bg-transparent text-white text-center mx-auto">
+  <div class="jumbotron bg-transparent m-2 p-2">
+    <h1 class="text-dark p-2 m-2 bg-transparent">A* Algorithm</h1>
+    <h5 class="lead border border-light rounded p-2 m-2 bg-dark">The A* Algorithm is the popular choice for PathFinding, it uses a combination of traits from different search algorithms such as Dijkstra’s algorithm and Greedy Best-first search to help guide it's search</h5>
+    <h5 class="lead border border-light rounded p-2 m-2 bg-dark">It uses a heuristic that takes into account the distance from the goal (h) and the cost of choosing that node (g) these two search traits form the evaluation function f(n) where: <br> f(n) = g(n) + h(n) </h5>
+  </div>
+</div>
+
 <div class="container">
 
   <div class="row">
-    <div class="col-md-auto">
+    <div class="col-md-auto mx-auto my-auto">
       <div class="container mt-5 bg-dark text-light rounded">
 
         <h1 class="small p-2 border border-dark rounded bg-dark text-white">Click on the Start/End Coordinates to move them!</h1>
@@ -82,14 +90,6 @@
     </div>
   </div>
 
-</div>
-
-<div class="container m-3 bg-dark text-white text-center mx-auto">
-  <div class="jumbotron bg-transparent p-2 m-0">
-    <h2 class="lead mb-3" id="path">A* Algorithm</h2>
-    <h5 class="lead border border-light rounded p-2">The A* Algorithm is the popular choice for PathFinding, it uses a combination of traits from different search algorithms such as Dijkstra’s algorithm and Greedy Best-first search to help guide it's search</h5>
-    <h5 class="lead border border-light rounded p-2">It uses a heuristic that takes into account the distance from the goal (h) and the cost of choosing that node (g) these two search traits form the evaluation function f(n) where: <br> f(n) = g(n) + h(n) </h5>
-  </div>
 </div>
 
 </body>
