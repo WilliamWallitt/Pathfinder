@@ -220,8 +220,3 @@ function check_if_in_closed_list(coordinate, list){
     return false
 }
 
-// let start_coordinate = coords[Math.floor(Math.random() * coords.length)]
-// let end_coordinate = coords[Math.floor(Math.random() * coords.length)]
-//
-// let finished = A_star(start_coordinate, end_coordinate, [[400, 400]])
-
