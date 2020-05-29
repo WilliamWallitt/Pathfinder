@@ -219,4 +219,132 @@ function check_if_in_closed_list(coordinate, list){
     }
     return false
 }
-
+// function A_star(start_coordinate, end_coordinate, obsticles){
+//
+//     let open_list = []
+//     let closed_list = []
+//
+//     // add start coordinate to open list
+//
+//     let start_node = new Node(start_coordinate, null, 0, choose_heuristic(start_coordinate, end_coordinate))
+//     let end_node = new Node(end_coordinate, null, 0, 0)
+//
+//     open_list.push(start_node)
+//
+//     for (let o = 0; o < obsticles.length; o++) {
+//         closed_list.push(new Node(obsticles[o], null, null, null))
+//     }
+//
+//     let counter = 0
+//
+//     let infinite_list = []
+//
+//     while(open_list.length){
+//
+//         let current_node = find_lowest_f_value(open_list)
+//
+//         infinite_list.push(current_node.current_coordinate)
+//         // current_node.current_coordinate[0] === end_coordinate[0] && current_node.current_coordinate[1] === end_coordinate[1]
+//         if (current_node.current_coordinate === end_coordinate){
+//
+//             console.log("done")
+//             open_l = open_list
+//             closed_l = closed_list
+//
+//             let path = []
+//             let curr_node = current_node
+//
+//             while(curr_node.parent_coord){
+//                 path.push(curr_node.current_coordinate)
+//                 curr_node = curr_node.parent_coord
+//             }
+//             path.push(start_node.current_coordinate)
+//             return path.reverse()
+//         }
+//
+//         if (!check_if_infinite(infinite_list)){
+//
+//             console.log("infinite")
+//             // let curr = current_node
+//             // let par = current_node.parent_coord
+//             //
+//             // console.log(par, curr)
+//             // let test = find_neighbours(current_node.current_coordinate, grid_size, grid_step)
+//             //
+//             // for (let i = 0; i < test.length; i++) {
+//             //     for (let j = 0; j < closed_list.length; j++) {
+//             //         if (closed_list[j].current_coordinate === test[i]){
+//             //             closed_list.splice(j, 1)
+//             //         }
+//             //     }
+//             // }
+//             //
+//             // let parent = current_node.parent_coord
+//             // current_node = parent
+//
+//
+//             open_l = open_list
+//             closed_l = closed_list
+//
+//             let path = []
+//             let curr_node = current_node
+//
+//             while(curr_node.parent_coord){
+//                 path.push(curr_node.current_coordinate)
+//                 curr_node = curr_node.parent_coord
+//             }
+//             path.push(start_node.current_coordinate)
+//             return path.reverse()
+//         }
+//
+//         // push current node into open list
+//         // if (current_node.current_coordinate !== start_coordinate && check_if_in_closed_list(current_node.current_coordinate, closed_list)){
+//         closed_list.push(current_node)
+//         // }
+//         open_list = remove_from_from_list(current_node, open_list)
+//
+//         let neighbours = find_neighbours(current_node.current_coordinate, grid_size, grid_step)
+//         // counter = 0
+//
+//         for (let y = 0; y < neighbours.length; y++) {
+//
+//             let n = new Node(neighbours[y], current_node, current_node.g_value + 1, choose_heuristic(neighbours[y], end_node.current_coordinate))
+//
+//             if (check_if_in_closed_list(n.current_coordinate, closed_list)){
+//
+//                 // counter >= neighbours.length || n.current_coordinate === end_coordinate
+//                 // if (counter >= neighbours.length || n.current_coordinate === end_coordinate) {
+//                 //
+//                 // open_l = open_list
+//                 // closed_l = closed_list
+//                 //
+//                 // let path = []
+//                 // let curr_node = current_node
+//                 //
+//                 // while (curr_node.parent_coord) {
+//                 //     path.push(curr_node.current_coordinate)
+//                 //     curr_node = curr_node.parent_coord
+//                 // }
+//                 // path.push(start_node.current_coordinate)
+//                 // return path.reverse()
+//
+//                 // } else {
+//                 //     counter += 1
+//                 continue
+//             }
+//
+//             if(!check_if_in_closed_list(n.current_coordinate, open_list)){
+//                 open_list.push(n)
+//             } else {
+//                 for (let i = 0; i < open_list.length; i++) {
+//                     if (open_list[i].current_coordinate === n.current_coordinate){
+//                         if (open_list[i].f_value > n.f_value){
+//                             open_list[i] = n
+//                         }
+//                     }
+//                 }
+//             }
+//         }
+//     }
+//
+// }

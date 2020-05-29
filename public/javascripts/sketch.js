@@ -1,3 +1,4 @@
+
 class Grid {
 
     constructor(x_max=1000, y_max=1000, step= 40) {
@@ -26,14 +27,11 @@ class Grid {
     }
 }
 
-// lets create a class for each grid square
-// this will contain its current coordinate, its parent coordinate and heuristic values
-
 class Node{
     constructor(coord, p_coord, g, h) {
         this.coord = coord
         this.p_coord = p_coord
-        this.g = g + 1
+        this.g = g
         this.h = h
         this.f = g + h
 
@@ -147,7 +145,7 @@ function check_if_infinite(list){
         }
     }
 
-    return occ < 100;
+    return occ < 1000;
 
 }
 
@@ -164,23 +162,18 @@ function A_star(start_coordinate, end_coordinate, obsticles){
 
     open_list.push(start_node)
 
-    for (let o = 0; o < obsticles.length; o++) {
-        closed_list.push(new Node(obsticles[o], null, null, null))
+    if (obsticals.length > 0){
+        for (let o = 0; o < obsticals.length; o++) {
+            closed_list.push(new Node(obsticals[o], null, null, null))
+        }
     }
-
-    let counter = 0
-    let infinite_loop = 0
-    let prev_node
-
-    let infinite_list = []
 
     while(open_list.length){
 
         let current_node = find_lowest_f_value(open_list)
 
-        infinite_list.push(current_node.current_coordinate)
+        if (current_node.current_coordinate[0] === end_node.current_coordinate[0] && current_node.current_coordinate[1] === end_node.current_coordinate[1]){
 
-        if (!check_if_infinite(infinite_list)){
             open_l = open_list
             closed_l = closed_list
 
@@ -195,58 +188,18 @@ function A_star(start_coordinate, end_coordinate, obsticles){
             return path.reverse()
         }
 
-        if (current_node.current_coordinate[0] === end_coordinate[0] && current_node.current_coordinate[1] === end_coordinate[1]){
-            open_l = open_list
-            closed_l = closed_list
-
-            let path = []
-            let curr_node = current_node
-
-            while(curr_node.parent_coord){
-                path.push(curr_node.current_coordinate)
-                curr_node = curr_node.parent_coord
-            }
-            path.push(start_node.current_coordinate)
-            return path.reverse()
-        }
-        // push current node into open list
-        if (current_node.current_coordinate !== start_coordinate){
-            open_list.push(current_node)
-        }
-        //    remove from open list
+        closed_list.push(current_node)
         open_list = remove_from_from_list(current_node, open_list)
 
-        //    neighbours
         let neighbours = find_neighbours(current_node.current_coordinate, grid_size, grid_step)
-
-        counter = 0
+        // counter = 0
 
         for (let y = 0; y < neighbours.length; y++) {
 
-            let n = new Node(neighbours[y], current_node, current_node.g_value, choose_heuristic(neighbours[y], end_node.current_coordinate))
+            let n = new Node(neighbours[y], current_node, current_node.g_value + 1, choose_heuristic(neighbours[y], end_node.current_coordinate))
 
             if (check_if_in_closed_list(n.current_coordinate, closed_list)){
-
-                if (counter >= neighbours.length || n.current_coordinate === end_coordinate){
-
-                    open_l = open_list
-                    closed_l = closed_list
-
-                    let path = []
-                    let curr_node = current_node
-
-                    while(curr_node.parent_coord){
-                        path.push(curr_node.current_coordinate)
-                        curr_node = curr_node.parent_coord
-                    }
-                    path.push(start_node.current_coordinate)
-                    return path.reverse()
-
-                } else {
-                    counter += 1
-                    continue
-                }
-
+                continue
             }
 
             if(!check_if_in_closed_list(n.current_coordinate, open_list)){
@@ -263,7 +216,6 @@ function A_star(start_coordinate, end_coordinate, obsticles){
         }
     }
 
-    return []
 }
 
 function find_lowest_f_value(list){
@@ -373,8 +325,6 @@ function draw_grid(coords){
     }
 }
 
-
-
 function user_grid_square(user_x, user_y, coords) {
 
     for (let x = 0; x < coords.length; x++) {
@@ -417,7 +367,6 @@ function on_random(){
     document.getElementById("obsticals").value = num
     obstical_amount = num
 }
-
 
 function onSubmit(){
 
@@ -497,6 +446,8 @@ function on_grid_resize(){
     let g = document.getElementById("grid_size").value
     step = 50
     step = step / Number(g.slice(0, 1))
+
+    obstical_amount = 0
 
     grid = new Grid(canvas_size, canvas_size, step)
     grid_size = grid.grid_size
@@ -619,7 +570,6 @@ function draw() {
     draw_grid(coords)
 
     if (start_algorithm){
-
         obsticals = generate_obsticals(coords, obstical_amount, start_coordinate, end_coordinate)
         finished_path = A_star(start_coordinate, end_coordinate, obsticals)
         start_algorithm = false
