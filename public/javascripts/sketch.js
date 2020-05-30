@@ -332,7 +332,7 @@ function user_grid_square(user_x, user_y, coords) {
 }
 
 function draw_rect(coord, step, c){
-    fill(150, 150, 150, 200)
+    fill(c)
     rect(coord[0], coord[1], step, step)
 }
 
@@ -599,11 +599,11 @@ function draw() {
         myTimer();
 
         for (let i = 0; i < open_l.length; i++) {
-            draw_rect(open_l[i].current_coordinate, grid_step, "red")
+            draw_rect(open_l[i].current_coordinate, grid_step, "grey")
         }
 
         for (let i = 0; i < closed_l.length; i++) {
-            draw_rect(closed_l[i].current_coordinate, grid_step, "red")
+            draw_rect(closed_l[i].current_coordinate, grid_step, "pink")
         }
 
         draw_path(test_path, grid_step,"blue")
