@@ -55,7 +55,6 @@ class Node{
 
 }
 
-
 function euclidian_heuristic(current_point, goal_point){
 
     let x_diff = current_point[0] - goal_point[0]
@@ -70,6 +69,8 @@ function manhattan_heuristic(current_point, goal_point){
 
     return Math.round(Math.abs(x_diff) + Math.abs(y_diff))
 }
+
+// add other functions
 
 
 function find_neighbours(current_point, grid_size, rect_size){
@@ -132,23 +133,6 @@ function choose_heuristic(start, end){
     }
 
 }
-
-function check_if_infinite(list){
-    let prev
-    let curr
-    let occ = 0
-    for (let i = 0; i < list.length - 1; i++) {
-        prev = list[i]
-        curr = list[i + 1]
-        if (prev === curr){
-            occ += 1
-        }
-    }
-
-    return occ < 1000;
-
-}
-
 
 function A_star(start_coordinate, end_coordinate, obsticles){
 
@@ -242,7 +226,6 @@ function remove_from_from_list(node, list){
     return list
 }
 
-
 function check_if_in_closed_list(coordinate, list){
     for (let i = 0; i < list.length; i++) {
         let curr = list[i].current_coordinate
@@ -283,6 +266,7 @@ function generate_obsticals(coords, amount, start, end) {
     return obsticals
 
 }
+
 
 function draw_path(path, size, color){
     for (let i = 0; i < path.length; i++) {
@@ -404,7 +388,7 @@ function onSubmit(){
         test_open = []
 
         ra = 0
-        startT = 500
+        startT = 0
         deltaT = 2000
         doit = false;
 
@@ -431,7 +415,7 @@ function onSubmit(){
         test_open = []
 
         ra = 0
-        startT = 500
+        startT = 0
         deltaT = 2000
         doit = false;
 
@@ -508,7 +492,7 @@ function on_heuristic(){
 // lets do some cool animations
 
 let ra = 0
-let startT = 500
+let startT = 0
 let deltaT = 500
 let doit = false;
 
@@ -545,6 +529,10 @@ let start_algorithm = false
 let diagonal = false
 let manhatten = false
 
+// animation
+let test_path = []
+let test_open = []
+
 // let w = window.innerWidth
 
 function setup() {
@@ -579,9 +567,6 @@ function setup() {
 
 }
 
-// animation
-let test_path = []
-let test_open = []
 
 function draw() {
 

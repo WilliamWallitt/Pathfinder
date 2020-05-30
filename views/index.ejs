@@ -57,7 +57,7 @@
 
         <div class="form-group">
           <label for="grid_size">Grid Size</label>
-          <select class="form-control" id="grid_size" onclick="on_grid_resize()">
+          <select class="form-control" id="grid_size" onchange="on_grid_resize()">
             <option class="g">10x10</option>
             <option class="g">20x20</option>
             <option class="g">25x25</option>
@@ -74,7 +74,7 @@
 
         <div class="form-group">
           <label for="exampleFormControlSelect1">Select Heuristic to search with!</label>
-          <select class="form-control" id="heuristic" onclick="on_heuristic()">
+          <select class="form-control" id="heuristic" onchange="on_heuristic()">
             <option value="1">1: Euclidian Heuristic</option>
             <option value="2">2: Manhattan Heuristic</option>
           </select>
@@ -92,7 +92,33 @@
 
 </div>
 
+<div class="jumbotron bg-light mt-3">
+  <h1 class="display-5 text-center pb-5">Pseudo Code for the A* Algorithm</h1>
+  <div class="container lead">
+    <p>Declare two lists<code> Open[] and Closed[]</code> Open is for unvisited nodes, Closed is for visited nodes</p>
+    <p>Push starting node into the open list<code> Open.push(start_node)</code></p>
+    <p>(Optional) Push obstacles into closed list <code> Closed.push(obstacles)</code></p>
+    <hr class="my-4">
+    <p>While there is a node to be explored in the open list</p>
+    <p>Find the node in the open list that has the lowest <code> f(n)</code> value</p>
+    <p>Check if that node is the end_node we are looking for</p>
+    <p>Push current node into <code> closed</code> list and remove from <code> open</code> list</p>
+    <p>Generate the current node's neighbours</p>
+    <hr class="my-4">
+    <p>For each neighbour</p>
+    <p>If it is the closed list, continue</p>
+    <p>If it is <code> not</code> in the open list, add to open list</p>
+    <p>If it is <code> in</code> the open list, compare <code> f(n) node in open list and f(n) current neighbour</code></p>
+    <p>If the <code>f(n) </code>of the current neighbour is <code>less </code> than, then update that node in the open list <code> f(n) value</code></p>
+  </div>
+  <hr class="my-4">
+  <p class="text-center lead">Here is a link to my <a href="https://github.com/WilliamWallitt/Pathfinder">github</a> if you are interested</p>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <span class="text-muted">William Wallitt</span>
+  </div>
+</footer>
 </body>
-
-
 </html>
