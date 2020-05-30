@@ -76,12 +76,12 @@ function find_neighbours(current_point, grid_size, rect_size){
 
     let n_coords = []
 
-    if (current_point[0] <= grid_size - rect_size) {
+    if (current_point[0] < grid_size - rect_size) {
 
         n_coords.push([current_point[0] + rect_size, current_point[1]])
 
     }
-    if (current_point[1] <= grid_size - rect_size) {
+    if (current_point[1] < grid_size - rect_size) {
 
         n_coords.push([current_point[0], current_point[1] + rect_size])
 
@@ -104,17 +104,17 @@ function find_neighbours(current_point, grid_size, rect_size){
             n_coords.push([current_point[0] - rect_size, current_point[1] - rect_size])
 
         }
-        if (current_point[0] <= grid_size - rect_size && current_point[1] >= rect_size) {
+        if (current_point[0] < grid_size - rect_size && current_point[1] >= rect_size) {
 
             n_coords.push([current_point[0] + rect_size, current_point[1] - rect_size])
 
         }
-        if (current_point[0] <= grid_size - rect_size && current_point[1] >= grid_size - rect_size) {
+        if (current_point[0] < grid_size - rect_size && current_point[1] > grid_size - rect_size) {
 
             n_coords.push([current_point[0] + rect_size, current_point[1] + rect_size])
 
         }
-        if (current_point[0] >= rect_size && current_point[1] >= grid_size - rect_size) {
+        if (current_point[0] >= rect_size && current_point[1] > grid_size - rect_size) {
 
             n_coords.push([current_point[0] - rect_size, current_point[1] + rect_size])
 
@@ -192,13 +192,18 @@ function A_star(start_coordinate, end_coordinate, obsticles){
         open_list = remove_from_from_list(current_node, open_list)
 
         let neighbours = find_neighbours(current_node.current_coordinate, grid_size, grid_step)
-        // counter = 0
+
+        counter = 0
 
         for (let y = 0; y < neighbours.length; y++) {
 
             let n = new Node(neighbours[y], current_node, current_node.g_value + 1, choose_heuristic(neighbours[y], end_node.current_coordinate))
 
             if (check_if_in_closed_list(n.current_coordinate, closed_list)){
+                counter += 1
+                if (counter >= 4){
+                    current_node = current_node.parent_coord
+                }
                 continue
             }
 
@@ -248,7 +253,7 @@ function check_if_in_closed_list(coordinate, list){
     return false
 }
 
-function generate_obsticals(coords, amount, start_coord, end_coord) {
+function generate_obsticals(coords, amount, start, end) {
 
     let obsticals = []
 
@@ -256,10 +261,10 @@ function generate_obsticals(coords, amount, start_coord, end_coord) {
         // select random coordinate
         let ob = coords[Math.floor(Math.random() * coords.length)]
         // check that is not the start/end coordinate
-        while (ob === start_coord || ob === end_coord) {
+        while (ob[0] === start[0] && ob[1] === start[1] || ob[0] === end[0] && ob[1] === end[1]) {
             ob = coords[Math.floor(Math.random() * coords.length)]
         }
-        let flag = false
+
         // generate neightbours
 
         let neigh = find_neighbours(ob, grid_size, grid_step)
@@ -377,7 +382,7 @@ function onSubmit(){
         let g = document.getElementById("grid_size").value
         let obstacle_amount = document.getElementById("obsticals").value
 
-        if (obstacle_amount) {
+        if (obstacle_amount > 0) {
             document.getElementById("obsticals").value = ""
             if (obstacle_amount > Math.pow(Number(g.slice(0, 2)), 2) / 3) {
                 obstical_amount = Number(g.slice(0, 2))
@@ -400,7 +405,7 @@ function onSubmit(){
 
         ra = 0
         startT = 500
-        deltaT = 500
+        deltaT = 2000
         doit = false;
 
         resize(canvas_size, canvas_size)
@@ -416,6 +421,7 @@ function onSubmit(){
 
         btn.innerText = "Search"
         $("#grid_size").prop("disabled", false);
+        $("#obstacle_amount").prop("disabled", false);
 
         obsticals = []
         finished_path = undefined
@@ -426,7 +432,7 @@ function onSubmit(){
 
         ra = 0
         startT = 500
-        deltaT = 500
+        deltaT = 2000
         doit = false;
 
         resize(canvas_size, canvas_size)
@@ -471,7 +477,6 @@ function on_grid_resize(){
 
 }
 
-
 function resize(w, h) {
     resizeCanvas(w, h, false);
 }
@@ -502,9 +507,10 @@ function on_heuristic(){
 
 // lets do some cool animations
 
-let ra = 0,
-    startT, deltaT = 500,
-    doit = false;
+let ra = 0
+let startT = 500
+let deltaT = 500
+let doit = false;
 
 function myTimer() {
     if (millis() > startT + deltaT) {
@@ -526,7 +532,7 @@ let coords
 let canvas_size = 500
 let step = 50
 
-let obstical_amount = 10
+let obstical_amount = 0
 let obsticals = []
 
 let start_coordinate
@@ -539,7 +545,19 @@ let start_algorithm = false
 let diagonal = false
 let manhatten = false
 
+// let w = window.innerWidth
+
 function setup() {
+
+    // if (w < 540){
+    //     canvas_size = 250
+    //     let options = document.getElementsByClassName("g")
+    //     options[0].innerHTML = "5x5"
+    //     options[1].innerHTML = "10x10"
+    //     options[2].innerHTML = "15x15"
+    //     options[3].innerHTML = "20x20"
+    //
+    // }
 
     createCanvas(canvas_size, canvas_size).parent("sketch")
     background('white');
@@ -573,7 +591,10 @@ function draw() {
         obsticals = generate_obsticals(coords, obstical_amount, start_coordinate, end_coordinate)
         finished_path = A_star(start_coordinate, end_coordinate, obsticals)
         start_algorithm = false
+    }
 
+    if (obsticals){
+        draw_obsticals(obsticals)
     }
 
     if (obsticals && finished_path){
@@ -584,37 +605,7 @@ function draw() {
             }
             test_path.push(finished_path[ra])
 
-            if (finished_path[ra] === start_coordinate || finished_path[ra] === end_coordinate){
-                doit = false
-
-            } else {
-
-                if (finished_path.length > 0){
-
-                    let neighbours = finished_path[ra]
-
-                    for (let i = 0; i < obsticals.length; i++) {
-                        for (let j = 0; j < neighbours.length; j++) {
-                            if (obsticals[i] === neighbours[j] || neighbours[j] === start_coordinate || neighbours[j] === end_coordinate){
-                                neighbours.splice(j, 1)
-                            }
-                        }
-                    }
-
-                    let generate_neigh = find_neighbours(neighbours, grid_size, grid_step)
-                    for (let i = 0; i < generate_neigh.length; i++) {
-
-                        for (let k = 0; k < test_open; k++) {
-                            if (test_open[k] === neighbours[i]){
-                                generate_neigh.splice(i, 1)
-                            }
-                        }
-
-                    }
-
-
-                    test_open.push(generate_neigh)
-                }
+            if (finished_path[ra] === start_coordinate || finished_path[ra] === end_coordinate) {
                 doit = false
             }
 
@@ -622,17 +613,16 @@ function draw() {
 
         myTimer();
 
-        for (let i = 0; i < test_open.length; i++) {
-            for (let j = 0; j < test_open[i].length; j++) {
-                draw_rect(test_open[i][j], grid_step, 'grey')
-            }
+        for (let i = 0; i < open_l.length; i++) {
+            draw_rect(open_l[i].current_coordinate, grid_step, "red")
+        }
+
+        for (let i = 0; i < closed_l.length; i++) {
+            draw_rect(closed_l[i].current_coordinate, grid_step, "red")
         }
 
         draw_path(test_path, grid_step,"blue")
         draw_obsticals(obsticals)
-
-
-
 
     }
 
@@ -655,8 +645,6 @@ function draw() {
         }
     }
 }
-
-
 
 
 
