@@ -537,16 +537,6 @@ let test_open = []
 
 function setup() {
 
-    // if (w < 540){
-    //     canvas_size = 250
-    //     let options = document.getElementsByClassName("g")
-    //     options[0].innerHTML = "5x5"
-    //     options[1].innerHTML = "10x10"
-    //     options[2].innerHTML = "15x15"
-    //     options[3].innerHTML = "20x20"
-    //
-    // }
-
     createCanvas(canvas_size, canvas_size).parent("sketch")
     background('white');
 
@@ -616,11 +606,11 @@ function draw() {
     fill("red")
     rect(end_coordinate[0], end_coordinate[1], grid_step, grid_step)
 
-    if (mouseIsPressed && !start_algorithm) {
+    if (mouseIsPressed && !start_algorithm && !finished_path) {
         user_pos = mouseClicked()
     }
 
-    if (user_pos !== undefined && !start_algorithm){
+    if (user_pos !== undefined && !start_algorithm && !finished_path){
         if (euclidian_heuristic(user_pos, start_coordinate) <  euclidian_heuristic(user_pos, end_coordinate)){
             start_coordinate = user_pos
             draw_rect(start_coordinate, grid_step, "yellow")
